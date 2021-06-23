@@ -1,8 +1,7 @@
 from django.db import models
-import board
-import adafruit_dht
 
 SENSOR_CHOICES = [('DHT11', 'DHT11 - Humidity/Temperature'),
+                  ('Rain', 'Rain Sensor'),
                   ]
 
 USB_CHOICES = [('/dev/ttyUSB0', 'USB Port 0'),
@@ -21,7 +20,3 @@ class Sensor(models.Model):
 
     class Meta:
         ordering = ['sensor_name']
-
-    def read(self):
-        dhtDevice = adafruit_dht.DHT11(exec('board.D' + str(self.pin)))
-

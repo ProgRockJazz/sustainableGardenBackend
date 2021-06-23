@@ -28,4 +28,5 @@ class SensorReader:
             if data:
                 out += data
             else:
-                return out
+                out_json = json.loads(out)
+                return out_json
