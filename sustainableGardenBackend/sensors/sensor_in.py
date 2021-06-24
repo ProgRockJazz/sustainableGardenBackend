@@ -1,5 +1,5 @@
 import serial
-from sensors.models import Sensor
+from .models import Sensor
 import json
 import time
 

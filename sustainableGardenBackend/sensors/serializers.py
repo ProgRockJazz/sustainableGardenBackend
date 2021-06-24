@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sensors.models import Sensor, SENSOR_CHOICES
+from .models import Sensor
 
 
 class SensorSerializer(serializers.ModelSerializer):

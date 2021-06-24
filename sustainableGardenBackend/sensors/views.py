@@ -1,7 +1,7 @@
 from django.http import Http404
-from sensors.sensor_in import SensorReader
-from sensors.models import Sensor
-from sensors.serializers import SensorSerializer
+from .sensor_in import SensorReader
+from .models import Sensor
+from .serializers import SensorSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -24,7 +24,7 @@ class SensorDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SensorRead(APIView):
-    def get_object(self,pk):
+    def get_object(self, pk):
         try:
             return Sensor.objects.get(pk=pk)
         except Sensor.DoesNotExist:
