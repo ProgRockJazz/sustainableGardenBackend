@@ -35,7 +35,7 @@ void readSensor(String sensorName, int sensorPin) {
       out["Rain"] = reading;
     }
 
-    serializeJsonPretty(out, Serial);    // pretified shoudn't matter
+    serializeJsonPretty(out, Serial);    // prettified shouldn't matter
   }
 
   else {
@@ -59,7 +59,7 @@ void loop() {
     DeserializationError err = deserializeJson(doc, Serial);
 
     if (err == DeserializationError::Ok) {
-      // decide whether the input is for a senosr reading or valve opening
+      // decide whether the input is for a sensor reading or valve opening
       if (doc.containsKey("sensor")) {
         long pinin = doc["pin"];
         String sensor = doc["sensor"];
