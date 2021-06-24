@@ -8,6 +8,7 @@ void setup() {
   while (!Serial) continue;
 }
 
+// takes sensor type and sensor pin to take appropriate type of reading
 void readSensor(String sensorName, int sensorPin) {
   if (sensorPin >= 2 && sensorPin <= NPINS && sensorName != "") {
     StaticJsonDocument<200> out;
@@ -33,13 +34,23 @@ void readSensor(String sensorName, int sensorPin) {
       int reading = digitalRead(sensorPin);
       out["Rain"] = reading;
     }
-    
-    serializeJsonPretty(out, Serial);
+
+    serializeJsonPretty(out, Serial);    // pretified shoudn't matter
   }
 
   else {
     Serial.println("Invalid input!");
   }
+}
+
+void openValve(int openTime, int valvePin) {
+  pinMode(valvePin, OUTPUT);
+
+  digitalWrite(valvePin, HIGH);
+  delay(openTime);
+  digitalWrite(valvePin, LOW);
+
+  pinMode(valvePin, INPUT); // set to default
 }
 
 void loop() {
@@ -48,10 +59,22 @@ void loop() {
     DeserializationError err = deserializeJson(doc, Serial);
 
     if (err == DeserializationError::Ok) {
-      long pinin = doc["pin"];
-      String sensor = doc["sensor"];
+      // decide whether the input is for a senosr reading or valve opening
+      if (doc.containsKey("sensor")) {
+        long pinin = doc["pin"];
+        String sensor = doc["sensor"];
 
-      readSensor(sensor, pinin);
+        readSensor(sensor, pinin);
+      }
+      else if (doc.containsKey("time")) {
+        long openTime = doc["time"];
+        long valvePin = doc["pin"];
+
+        openValve(openTime, valvePin);
+      }
+      else {
+        Serial.print("Invalid Input!");
+      }
     }
   }
 }
