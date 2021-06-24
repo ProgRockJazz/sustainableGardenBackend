@@ -46,9 +46,9 @@ void readSensor(String sensorName, int sensorPin) {
 void openValve(int openTime, int valvePin) {
   pinMode(valvePin, OUTPUT);
 
-  digitalWrite(valvePin, HIGH);
-  delay(openTime);
   digitalWrite(valvePin, LOW);
+  delay(openTime);
+  digitalWrite(valvePin, HIGH);
 
   pinMode(valvePin, INPUT); // set to default
 }
