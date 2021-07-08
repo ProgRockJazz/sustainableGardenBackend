@@ -17,6 +17,13 @@ class Sensor(models.Model):
     sensor_type = models.CharField(choices=SENSOR_CHOICES, default='DHT11', max_length=50)
     usb_port = models.CharField(choices=USB_CHOICES, default='/dev/ttyUSB0', max_length=50)
     pin = models.IntegerField()
+    in_use = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['sensor_name']
+
+
+class SensorReading(models.Model):
+    sensor = models.ForeignKey(Sensor, on_delete=models.PROTECT)
+    reading = models.JSONField()
+    time_of_reading = models.DateTimeField(auto_now_add=True)
