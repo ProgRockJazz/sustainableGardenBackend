@@ -1,7 +1,7 @@
 from django.http import Http404
 from .sensor_in import SensorReader
-from .models import Sensor
-from .serializers import SensorSerializer
+from .models import Sensor, SensorReading
+from .serializers import SensorSerializer, SensorReadingSerializer
 from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -35,3 +35,25 @@ class SensorRead(APIView):
         reader = SensorReader(sensor)
         data = reader.read()
         return Response(data)
+
+
+class SensorReadAll(APIView):
+    """
+    View to read all current sensor values
+    """
+
+    def get(self, request):
+        sensors = [sensor for sensor in Sensor.objects.all()]
+        readings = []
+        for sensor in sensors:
+            reader = SensorReader(sensor)
+            reading = reader.read()
+            reading["sensor_pk"] = sensor.pk
+            readings.append(reading)
+
+        return Response(readings)
+
+
+class SensorReadingList(generics.ListAPIView):
+    queryset = SensorReading.objects.all()
+    serializer_class = SensorReadingSerializer
