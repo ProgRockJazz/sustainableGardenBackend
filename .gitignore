@@ -1,3 +1,2 @@
-/db.sqlite3
 /.idea/*
-/postgres_data/*
+/sustainableGardenBackend/postgres_data/*
