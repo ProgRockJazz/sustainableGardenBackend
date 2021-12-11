@@ -4,7 +4,7 @@ SENSOR_CHOICES = [('DHT11', 'DHT11 - Humidity/Temperature'),
                   ('Rain', 'Rain Sensor'),
                   ]
 
-USB_CHOICES = [('/dev/ttyTEST', 'USB Port 0'),
+USB_CHOICES = [('/dev/ttyTEST2', 'USB Port 0'),
                ('/dev/ttyUSB1', 'USB Port 1'),
                ('/dev/ttyUSB2', 'USB Port 2'),
                ('/dev/ttyUSB3', 'USB Port 3'),
