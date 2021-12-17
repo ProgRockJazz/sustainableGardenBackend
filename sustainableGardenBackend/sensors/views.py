@@ -45,6 +45,7 @@ class SensorReadAll(APIView):
     def get(self, request):
         sensors = [sensor for sensor in Sensor.objects.all()]
         readings = []
+
         for sensor in sensors:
             reader = SensorReader(sensor)
             reading = reader.read()
@@ -52,7 +53,14 @@ class SensorReadAll(APIView):
             readings.append(reading)
 
         return Response(readings)
+        
+    # Creates Senors
+    def post(self, request):
+        reader = SensorReader()
+        pinAndTypeSelected = reader.sensor_info
+        newSensor = Sensor.objects.create(pinAndTypeSelected)
 
+        return Response(newSensor, 201)
 
 class SensorReadingList(generics.ListAPIView):
     queryset = SensorReading.objects.all()

@@ -7,8 +7,9 @@ import time
 class SensorReader:
     def __init__(self, sensor: Sensor):
         self.sensor_info = {
-            "pin": sensor.pin,
-            "sensor": sensor.sensor_type
+            "sensor": sensor.sensor_type,
+            "pin": sensor.pin
+            
         }
         self.usb = sensor.usb_port
 
