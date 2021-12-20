@@ -15,8 +15,5 @@ def read_all_sensors():
         sensor = Sensor.objects.get(pk=sensor_pk)
         reading = SensorReading(sensor=sensor, reading=reading)
         reading.save()
-
-def create_sensor_postRequest():
-    url = "http://" + ALLOWED_HOSTS[0] + ":8000/sensors"
-    data = requests.post(url)
+    
 

@@ -3,6 +3,7 @@ from .sensor_in import SensorReader
 from .models import Sensor, SensorReading
 from .serializers import SensorSerializer, SensorReadingSerializer
 from rest_framework import generics
+from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -36,7 +37,6 @@ class SensorRead(APIView):
         data = reader.read()
         return Response(data)
 
-
 class SensorReadAll(APIView):
     """
     View to read all current sensor values
@@ -53,14 +53,15 @@ class SensorReadAll(APIView):
             readings.append(reading)
 
         return Response(readings)
-        
+
     # Creates Senors
     def post(self, request):
-        reader = SensorReader()
-        pinAndTypeSelected = reader.sensor_info
-        newSensor = Sensor.objects.create(pinAndTypeSelected)
-
-        return Response(newSensor, 201)
+        data = JSONParser().parse(request)
+        serializer = SensorSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
 
 class SensorReadingList(generics.ListAPIView):
     queryset = SensorReading.objects.all()

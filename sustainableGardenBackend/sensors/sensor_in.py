@@ -5,6 +5,7 @@ import time
 
 
 class SensorReader:
+    
     def __init__(self, sensor: Sensor):
         self.sensor_info = {
             "sensor": sensor.sensor_type,
@@ -15,7 +16,6 @@ class SensorReader:
 
     def read(self):
         sensor_json = json.dumps(self.sensor_info).encode('UTF-8')
-
         ser = serial.Serial(self.usb, 115200, timeout=1)
         time.sleep(2)
         ser.flush()
