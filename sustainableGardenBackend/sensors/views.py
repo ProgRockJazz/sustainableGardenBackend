@@ -6,6 +6,7 @@ from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.views import APIView
 from rest_framework.response import Response
+import serial.tools.list_ports
 
 
 class SensorList(generics.ListCreateAPIView):
@@ -64,5 +65,10 @@ class SensorReadAll(APIView):
         return Response(serializer.errors, status=400)
 
 class SensorReadingList(generics.ListAPIView):
-    queryset = SensorReading.objects.all()
-    serializer_class = SensorReadingSerializer
+    try:
+        queryset = SensorReading.objects.all()
+        serializer_class = SensorReadingSerializer
+    except OSError: 
+        myports = [tuple(p) for p in list(serial.tools.list_ports.comports())]
+        errorResponse = "The port with this device does not exisit, here are some ports avaiable:" + myports
+        print(errorResponse)
