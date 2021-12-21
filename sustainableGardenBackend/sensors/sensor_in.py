@@ -1,4 +1,6 @@
+from json.decoder import JSONDecodeError
 import serial
+from serial.serialutil import SerialException
 from .models import Sensor
 import json
 import time
@@ -15,19 +17,36 @@ class SensorReader:
         self.usb = sensor.usb_port
 
     def read(self):
-        sensor_json = json.dumps(self.sensor_info).encode('UTF-8')
-        ser = serial.Serial(self.usb, 115200, timeout=1)
-        time.sleep(2)
-        ser.flush()
-
-        ser.write(sensor_json)
-        time.sleep(1.5)
+        data = ""
         out = ""
+        out_json = ""
+        ser = serial.Serial()
+        ser.baudrate = 115200
+        ser.timeout = 1
+        ser.port = self.usb
+        sensor_json = json.dumps(self.sensor_info).encode('UTF-8')
+        try:
+            ser.open()
+        except (OSError, serial.SerialException):
+            pass
+        time.sleep(2)
+        
+        try:
+            ser.flush()
+
+            ser.write(sensor_json)
+            time.sleep(1.5)
+            data = ser.readline().decode('utf-8').rstrip()
+        except (OSError, serial.SerialException):
+            pass
         while True:
             time.sleep(0.1)
-            data = ser.readline().decode('utf-8').rstrip()
             if data:
                 out += data
             else:
-                out_json = json.loads(out)
-                return out_json
+                try:
+                    out_json = json.loads(out)
+                except (JSONDecodeError):
+                    pass
+                break
+        return out_json

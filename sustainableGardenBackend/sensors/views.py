@@ -35,12 +35,7 @@ class SensorRead(APIView):
     def get(self, request, pk):
         sensor = self.get_object(pk)
         reader = SensorReader(sensor)
-        try:
-            data = reader.read()
-        except OSError: 
-            myports = [tuple(p) for p in list(serial.tools.list_ports.comports())]
-            errorResponse = "The port with this device does not exisit, here are some ports avaiable:" + myports
-            print(errorResponse)
+        data=reader.read()
         return Response(data)
 
 class SensorReadAll(APIView):
@@ -59,15 +54,6 @@ class SensorReadAll(APIView):
             readings.append(reading)
 
         return Response(readings)
-
-    # Creates Senors
-    def post(self, request):
-        data = JSONParser().parse(request)
-        serializer = SensorSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
 
 class SensorReadingList(generics.ListAPIView):
     queryset = SensorReading.objects.all()
