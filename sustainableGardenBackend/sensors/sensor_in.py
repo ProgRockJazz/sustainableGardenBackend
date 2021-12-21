@@ -23,11 +23,18 @@ class SensorReader:
         ser = serial.Serial()
         ser.baudrate = 115200
         ser.timeout = 1
-        ser.port = self.usb
+        ser.port = 'com3'
         sensor_json = json.dumps(self.sensor_info).encode('UTF-8')
+        print("The sensor info we are inputting is: ")
+        print(sensor_json)
         try:
             ser.open()
         except (OSError, serial.SerialException):
+            print("passing exception, is the port open?")
+            print(ser.is_open)
+            if ser.is_open == "False":
+                self.is_open = True
+                print(ser.is_open)
             pass
         time.sleep(2)
         
@@ -36,16 +43,26 @@ class SensorReader:
 
             ser.write(sensor_json)
             time.sleep(1.5)
-            data = ser.readline().decode('utf-8').rstrip()
         except (OSError, serial.SerialException):
             pass
         while True:
+            try:
+                data = ser.readline().decode('utf-8').rstrip()
+                
+            except (OSError, serial.SerialException):
+                pass
+            print(data)
             time.sleep(0.1)
             if data:
+                print("I'm at the if statement! data exists!")
+                print("out before: "+ out)
                 out += data
+                print("out after: " + out)
             else:
                 try:
-                    out_json = json.loads(out)
+                    print("No more data, loading out: ")
+                    print(out_json)
+                    out_json = out
                 except (JSONDecodeError):
                     pass
                 break
