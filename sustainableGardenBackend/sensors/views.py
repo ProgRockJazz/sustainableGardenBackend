@@ -36,6 +36,8 @@ class SensorRead(APIView):
         sensor = self.get_object(pk)
         reader = SensorReader(sensor)
         data=reader.read()
+        print("Data is: ")
+        print(data)
         return Response(data)
 
 class SensorReadAll(APIView):

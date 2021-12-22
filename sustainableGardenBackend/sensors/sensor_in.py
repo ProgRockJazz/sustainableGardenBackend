@@ -1,10 +1,8 @@
-from json.decoder import JSONDecodeError
 import serial
 from serial.serialutil import SerialException
 from .models import Sensor
 import json
 import time
-
 
 class SensorReader:
     
@@ -17,53 +15,21 @@ class SensorReader:
         self.usb = sensor.usb_port
 
     def read(self):
-        data = ""
-        out = ""
-        out_json = ""
-        ser = serial.Serial()
-        ser.baudrate = 115200
-        ser.timeout = 1
-        ser.port = 'com3'
-        sensor_json = json.dumps(self.sensor_info).encode('UTF-8')
-        print("The sensor info we are inputting is: ")
-        print(sensor_json)
-        try:
-            ser.open()
-        except (OSError, serial.SerialException):
-            print("passing exception, is the port open?")
-            print(ser.is_open)
-            if ser.is_open == "False":
-                self.is_open = True
-                print(ser.is_open)
-            pass
-        time.sleep(2)
-        
-        try:
-            ser.flush()
+        with open("sensor_data_entry.json", "w") as outfile:
+            json.dump(self.sensor_info, outfile)
 
-            ser.write(sensor_json)
-            time.sleep(1.5)
-        except (OSError, serial.SerialException):
-            pass
-        while True:
-            try:
-                data = ser.readline().decode('utf-8').rstrip()
-                
-            except (OSError, serial.SerialException):
-                pass
-            print(data)
-            time.sleep(0.1)
-            if data:
-                print("I'm at the if statement! data exists!")
-                print("out before: "+ out)
-                out += data
-                print("out after: " + out)
-            else:
-                try:
-                    print("No more data, loading out: ")
-                    print(out_json)
-                    out_json = out
-                except (JSONDecodeError):
-                    pass
-                break
-        return out_json
+        print("Sensor information: ")
+        print(self.sensor_info)
+        print("Sending...")
+
+        '''cwd = os.getcwd()  # Get the current working directory (cwd)
+        files = os.listdir(cwd)  # Get all the files in that directory
+        print("Files in %r: %s" % (cwd, files))'''
+        with open('FinalData_sensors.json') as json_file:
+            data = json.load(json_file)
+
+        print("Final data back is: ")
+        print(data)
+        return(data)
+
+        #exclue pychache in gitignore
