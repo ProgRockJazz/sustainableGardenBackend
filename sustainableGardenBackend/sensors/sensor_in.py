@@ -18,13 +18,6 @@ class SensorReader:
         with open("sensor_data_entry.json", "w") as outfile:
             json.dump(self.sensor_info, outfile)
 
-        print("Sensor information: ")
-        print(self.sensor_info)
-        print("Sending...")
-
-        '''cwd = os.getcwd()  # Get the current working directory (cwd)
-        files = os.listdir(cwd)  # Get all the files in that directory
-        print("Files in %r: %s" % (cwd, files))'''
         with open('FinalData_sensors.json') as json_file:
             data = json.load(json_file)
 
