@@ -8,6 +8,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import serial.tools.list_ports
 
+from datetime import datetime,timezone
+
 
 class SensorList(generics.ListCreateAPIView):
     """
@@ -52,11 +54,15 @@ class SensorReadAll(APIView):
         for sensor in sensors:
             reader = SensorReader(sensor)
             reading = reader.read()
-            reading["sensor_pk"] = sensor.pk
-            readings.append(reading)
+            # reading["sensor_pk"] = sensor.pk
+            newSensorReading = SensorReading(sensor = sensor, reading = reading, time_of_reading = datetime.now(timezone.utc))
+            newSerializerInstance = SensorReadingSerializer(newSensorReading)
+
+            # readings.append(reading)
+            readings.append(newSerializerInstance.data)
 
         return Response(readings)
 
 class SensorReadingList(generics.ListAPIView):
-    queryset = SensorReading.objects.all()
+    queryset = SensorReading.objects.order_by("time_of_reading")
     serializer_class = SensorReadingSerializer
