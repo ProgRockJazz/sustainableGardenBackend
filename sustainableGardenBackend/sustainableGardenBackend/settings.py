@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'sensors.apps.SensorsConfig',
     'water.apps.WaterConfig',
-    'django_crontab'
+    'loginAndRegisterUsers.apps.LoginandregisterusersConfig',
+    'django_crontab',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +51,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+    'http://10.0.2.2:8000',
 ]
 
 ROOT_URLCONF = 'sustainableGardenBackend.urls'
