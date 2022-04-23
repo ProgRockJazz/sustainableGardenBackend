@@ -5,7 +5,7 @@ SENSOR_CHOICES = [('DHT11', 'DHT11 - Humidity/Temperature'),
                   ]
 
 USB_CHOICES = [
-               ('com3', 'Arduino MEGA'),
+               ('/dev/ttyACM0', 'Arduino MEGA'),
                ('/dev/ttyUSB1', 'USB1'),
                ('/dev/ttyUSB2', 'USB2'),
                ('/dev/ttyUSB3', 'USB3'),
