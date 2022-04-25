@@ -2,6 +2,7 @@ from django.db import models
 
 SENSOR_CHOICES = [('DHT11', 'DHT11 - Humidity/Temperature'),
                   ('Rain', 'Rain Sensor'),
+                  ('SoilSensor', 'Soil Sensor'),
                   ]
 
 USB_CHOICES = [

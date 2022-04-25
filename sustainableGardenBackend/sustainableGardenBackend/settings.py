@@ -24,6 +24,7 @@ SECRET_KEY = 'CHANGE_ME'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# put pi IP in here
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2']
 
 # Application definition
@@ -59,6 +60,7 @@ CORS_ORIGIN_WHITELIST = [
     'http://127.0.0.1:8000',
     'http://localhost:8000',
     'http://10.0.2.2:8000',
+     # put pi IP here
 ]
 
 ROOT_URLCONF = 'sustainableGardenBackend.urls'
