@@ -12,7 +12,8 @@ ser.timeout = 1
 ser.port ='com3' # change this to self.usb
 
 sensor_data = open('/Users/Joseph Carey/Desktop/sustainableGardenBackend/sustainableGardenBackend/sensor_data_entry.json','r')
-print(sensor_data)
+# sensorList = sensor_data.read().splitlines()
+# print("sensor: ",sensorList)
 
 
 sensor_load = json.loads(sensor_data.read())
@@ -26,7 +27,7 @@ except (OSError, serial.SerialException):
 	print("exception passed")
 	pass
 
-time.sleep(2)
+time.sleep(1)
 try:
 	ser.flush()
 	ser.write(sensor_json)
@@ -52,3 +53,5 @@ while True:
 
 with open("/Users/Joseph Carey/Desktop/sustainableGardenBackend/sustainableGardenBackend/FinalData_sensors.json", "w") as outfile:
 	json.dump(out_json, outfile)
+
+outfile.close()

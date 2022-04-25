@@ -10,14 +10,14 @@ void setup() {
 
 // takes sensor type and sensor pin to take appropriate type of reading
 void readSensor(String sensorName, int sensorPin) {
-  if (sensorPin >= 2 && sensorPin <= NPINS && sensorName != "") {
+  if ((sensorPin >= 2 && sensorPin <= NPINS && sensorName != "")||(sensorPin == A0)) {
     StaticJsonDocument<200> out;
 
     if (sensorName.equals("DHT11")) {
       DHT dht(sensorPin, DHT11);
 
       dht.begin();
-      delay(500);
+//      delay(100);
 
       float h = dht.readHumidity();
       float t = dht.readTemperature();
@@ -33,6 +33,14 @@ void readSensor(String sensorName, int sensorPin) {
     else if (sensorName.equals("Rain")) {
       int reading = digitalRead(sensorPin);
       out["Rain"] = reading;
+    }
+    else if (sensorName.equals("SoilSensor")) {
+      int reading = analogRead(A0);
+      int reducedReading;
+      int low = 1023;
+      int high = 0;
+      reducedReading = map(reading,low,high,0,100);
+      out["Soil"] = reducedReading;
     }
 
     serializeJsonPretty(out, Serial);    // prettified shouldn't matter
