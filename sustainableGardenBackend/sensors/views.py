@@ -56,6 +56,7 @@ class SensorReadAll(APIView):
             reading = reader.read()
             # reading["sensor_pk"] = sensor.pk
             newSensorReading = SensorReading(sensor = sensor, reading = reading, time_of_reading = datetime.now(timezone.utc))
+            newSensorReading.save()
             newSerializerInstance = SensorReadingSerializer(newSensorReading)
 
             # readings.append(reading)
