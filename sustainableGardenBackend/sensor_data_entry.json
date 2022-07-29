@@ -1,1 +1,1 @@
-{"sensor": "SoilSensor", "pin": 8}
+{"sensor": "DHT11 - Humidity/Temperature", "pin": 7}

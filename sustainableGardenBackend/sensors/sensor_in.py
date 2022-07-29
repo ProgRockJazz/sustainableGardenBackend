@@ -1,6 +1,6 @@
 import serial
 from serial.serialutil import SerialException
-from .models import Sensor
+from .models import Sensor, SensorReading
 import json
 import time
 
@@ -29,3 +29,36 @@ class SensorReader:
         return(data)
 
         #exclue pychache in gitignore
+
+def initialize_test_dependencies():
+    hAndTSensor = Sensor.objects.create(
+        sensor_name="Humidity and Temp",
+        sensor_type="DHT11 - Humidity/Temperature",
+        pin=7,
+        usb_port="Arduino MEGA",
+        in_use=True
+    )
+    SensorReading.objects.create(sensor=hAndTSensor, reading = {
+        "Humidity": float,
+        "Temperature": float
+    })
+    rainSensor = Sensor.objects.create(
+        sensor_name="Rain",
+        sensor_type="Rain Sensor",
+        pin=8,
+        usb_port="Arduino MEGA",
+        in_use=True
+    )
+    SensorReading.objects.create(sensor=rainSensor, reading = {
+        "Rain": int
+    })
+    soilSensor = Sensor.objects.create(
+        sensor_name="SoilSensor",
+        sensor_type="SoilSensor",
+        pin=9,
+        usb_port="Arduino MEGA",
+        in_use=True
+    )
+    SensorReading.objects.create(sensor=soilSensor, reading = {
+        "Soil": float
+    })

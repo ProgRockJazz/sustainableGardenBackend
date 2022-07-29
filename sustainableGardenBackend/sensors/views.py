@@ -1,5 +1,5 @@
 from django.http import Http404
-from .sensor_in import SensorReader
+from .sensor_in import SensorReader, initialize_test_dependencies
 from .models import Sensor, SensorReading
 from .serializers import SensorSerializer, SensorReadingSerializer
 from rest_framework import generics
@@ -28,6 +28,13 @@ class SensorDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SensorRead(APIView):
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        # for testing purposes: creates two Sensors and adds them to the database in in order
+        # to make random SensorReadings
+        
+        initialize_test_dependencies()
+
     def get_object(self, pk):
         try:
             return Sensor.objects.get(pk=pk)
@@ -46,6 +53,12 @@ class SensorReadAll(APIView):
     """
     View to read all current sensor values
     """
+
+    def setup(self, request, *args, **kwargs):
+        super().setup(request, *args, **kwargs)
+        # for testing purposes: creates two Sensors and adds them to the database in in order
+        # to make random SensorReadings            
+        initialize_test_dependencies()
 
     def get(self, request):
         sensors = [sensor for sensor in Sensor.objects.all()]
